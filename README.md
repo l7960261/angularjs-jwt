@@ -1,6 +1,6 @@
-# NPM Module Boilerplate
+# angularjs-jwt
 
-[![Build Status](https://travis-ci.org/flexdinesh/npm-module-boilerplate.svg?branch=master)](https://travis-ci.org/flexdinesh/npm-module-boilerplate) [![dependencies Status](https://david-dm.org/flexdinesh/npm-module-boilerplate/status.svg)](https://david-dm.org/flexdinesh/npm-module-boilerplate) [![devDependencies Status](https://david-dm.org/flexdinesh/npm-module-boilerplate/dev-status.svg)](https://david-dm.org/flexdinesh/npm-module-boilerplate?type=dev) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.com/l7960261/angularjs-jwt.svg?branch=master)](https://travis-ci.com/l7960261/angularjs-jwt) [![dependencies Status](https://david-dm.org/l7960261/angularjs-jwt/status.svg)](https://david-dm.org/l7960261/angularjs-jwt) [![devDependencies Status](https://david-dm.org/l7960261/angularjs-jwt/dev-status.svg)](https://david-dm.org/l7960261/angularjs-jwt?type=dev) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 **Start developing your NPM module in seconds** ✨
 
@@ -27,9 +27,6 @@ Happy hacking =)
 - `npm run cover` - Get coverage report for your code.
 - `npm run build` - Babel will transpile ES6 => ES5 and minify the code.
 - `npm run prepublish` - Hook for npm. Do all the checks before publishing your module.
-
-# Installation
-Just clone this repo and remove `.git` folder.
 
 
 # License
