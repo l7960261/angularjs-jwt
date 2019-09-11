@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/l7960261/angularjs-jwt.git"
   },
   "keywords": [
     "AngularJS",
@@ -29,6 +29,10 @@
   ],
   "author": "Wilson Weng",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/l7960261/angularjs-jwt/issues"
+  },
+  "homepage": "https://github.com/l7960261/angularjs-jwt#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.1",
