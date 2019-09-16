@@ -6,7 +6,7 @@ export default function jwtInterceptor($q, $injector, $location) {
     request: (config) => {
       const reassignConfig = config;
       reassignConfig.headers = reassignConfig.headers || {};
-      const accessToken = $injector.get('jwtAuthentication').getAccessToken();
+      const accessToken = $injector.get('jwtAuthentication').accessToken;
       if (accessToken) {
         reassignConfig.headers.Authorization = `Bearer ${accessToken}`;
       }
