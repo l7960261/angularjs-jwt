@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 
 describe('Main Module', () => {
-  let options;
+  let service;
 
   beforeEach(
     angular.mock.module('angularjs-jwt')
@@ -9,13 +9,12 @@ describe('Main Module', () => {
 
   beforeEach(
     angular.mock.inject(($injector) => {
-      options = $injector.get('jwtOptions');
+      service = $injector.get('jwtAuthentication');
     })
   );
 
-  it('jwtOptions should be default value', () => {
-    assert.equal(options.accessTokenAPI, '/api/accessToken');
-    assert.equal(options.refreshTokenAPI, '/api/refreshToken');
-    assert.equal(options.loginPage, '/auth/login');
+  it('jwtAuthentication should be default value', () => {
+    assert.equal(service.refreshTokenAPI(), '/api/refreshToken');
+    assert.equal(service.loginPage(), '/auth/login');
   });
 });

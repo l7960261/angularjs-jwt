@@ -1,4 +1,4 @@
-export default function jwtInterceptor($q, $injector, $location, jwtOptions) {
+export default function jwtInterceptor($q, $injector, $location) {
   const replays = [];
   let refreshTokenPromise;
 
@@ -11,7 +11,7 @@ export default function jwtInterceptor($q, $injector, $location, jwtOptions) {
         reassignConfig.headers.Authorization = `Bearer ${accessToken}`;
       }
 
-      if (reassignConfig.url === jwtOptions.refreshTokenAPI) {
+      if (reassignConfig.url === $injector.get('jwtAuthentication').refreshTokenAPI()) {
         return reassignConfig;
       }
 
@@ -45,7 +45,7 @@ export default function jwtInterceptor($q, $injector, $location, jwtOptions) {
         replays.length = 0;
 
         // SET YOUR LOGIN PAGE
-        $location.url(jwtOptions.loginPage);
+        $location.url($injector.get('jwtAuthentication').loginPage());
       }
 
       if (response.status === 401) {
@@ -79,4 +79,4 @@ export default function jwtInterceptor($q, $injector, $location, jwtOptions) {
   };
 }
 
-jwtInterceptor.$inject = ['$q', '$injector', '$location', 'jwtOptions'];
+jwtInterceptor.$inject = ['$q', '$injector', '$location'];
