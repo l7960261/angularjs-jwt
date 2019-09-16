@@ -14,7 +14,7 @@ describe('Main Module', () => {
   );
 
   it('jwtAuthentication should be default value', () => {
-    assert.equal(service.refreshTokenAPI(), '/api/refreshToken');
-    assert.equal(service.loginPage(), '/auth/login');
+    assert.equal(service.config.refreshTokenURI, '/api/refreshToken');
+    assert.equal(service.config.redirect, '/auth/login');
   });
 });

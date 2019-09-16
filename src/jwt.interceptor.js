@@ -11,7 +11,7 @@ export default function jwtInterceptor($q, $injector, $location) {
         reassignConfig.headers.Authorization = `Bearer ${accessToken}`;
       }
 
-      if (reassignConfig.url === $injector.get('jwtAuthentication').refreshTokenAPI()) {
+      if (reassignConfig.url === $injector.get('jwtAuthentication').config.refreshTokenURI) {
         return reassignConfig;
       }
 
@@ -45,7 +45,7 @@ export default function jwtInterceptor($q, $injector, $location) {
         replays.length = 0;
 
         // SET YOUR LOGIN PAGE
-        $location.url($injector.get('jwtAuthentication').loginPage());
+        $location.url($injector.get('jwtAuthentication').config.redirect);
       }
 
       if (response.status === 401) {
