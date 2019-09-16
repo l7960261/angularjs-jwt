@@ -1,11 +1,11 @@
 import jwtInterceptor from './jwt.interceptor';
-import authService from './auth.service';
-import options from './jwt.options';
+import jwtAuthentication from './jwt.authentication';
+import jwtOptions from './jwt.options';
 
 const angularjsJwtModule = angular
   .module('angularjs-jwt', [])
-  .value('jwtOptions', options)
+  .value('jwtOptions', jwtOptions)
   .factory('jwtInterceptor', jwtInterceptor)
-  .factory('authService', authService);
+  .factory('jwtAuthentication', jwtAuthentication);
 
 export default angularjsJwtModule;

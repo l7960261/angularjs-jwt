@@ -1,7 +1,7 @@
-const options = {
+const OPTIONS = {
   accessTokenAPI: '/api/accessToken',
   refreshTokenAPI: '/api/refreshToken',
   loginPage: '/auth/login'
 };
 
-export default options;
+export default OPTIONS;
