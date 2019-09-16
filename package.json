@@ -6,10 +6,9 @@
   "scripts": {
     "clean": "rimraf lib",
     "test": "npm run lint && npm run cover",
-    "test:examples": "node examples/",
     "cover": "karma start karma-src.conf.js --single-run",
     "lint": "eslint src test",
-    "build": "webpack --config ./webpack.config.js --mode=production",
+    "build": "webpack --config ./webpack.config.js --mode=production && webpack --config ./webpack.config.dist.js --mode=production",
     "prepublish": "npm run clean && npm run lint && npm run test && npm run build"
   },
   "files": [
