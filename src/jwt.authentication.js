@@ -19,10 +19,12 @@ export default function jwtAuthenticationProvider() {
     let refreshToken = getToken(jwtOptions.refreshTokenKey);
 
     function saveAccessToken(value) {
-      saveToken(jwtOptions.accessTokenKey, value)
+      accessToken = value;
+      saveToken(jwtOptions.accessTokenKey, value);
     }
 
     function saveRefreshToken(value) {
+      refreshToken = value;
       saveToken(jwtOptions.refreshTokenKey, value);
     }
 
@@ -30,22 +32,20 @@ export default function jwtAuthenticationProvider() {
       get config() {
         return jwtOptions;
       },
-      login: (username, password) => {
-        return $http
-          .post(jwtOptions.accessTokenURI, { username, password })
-          .then((arg) => {
-            const { data } = arg;
-            ({ accessToken, refreshToken } = data);
-            saveAccessToken(accessToken);
-            saveRefreshToken(refreshToken);
-            return data;
-          });
-      },
+      login: (username, password) => $http
+        .post(jwtOptions.accessTokenURI, { username, password })
+        .then((arg) => {
+          const { data } = arg;
+          ({ accessToken, refreshToken } = data);
+          saveAccessToken(accessToken);
+          saveRefreshToken(refreshToken);
+          return data;
+        }),
       get accessToken() {
         return accessToken;
       },
-      saveAccessToken: saveAccessToken,
-      saveRefreshToken: saveRefreshToken,
+      saveAccessToken,
+      saveRefreshToken,
       refreshToken: () => {
         console.log('發起交換 Token');
         return $http
