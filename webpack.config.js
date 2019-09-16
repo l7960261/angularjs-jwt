@@ -3,7 +3,8 @@ module.exports = {
   output: {
     path: __dirname + '/lib',
     filename: 'index.js',
-    library: 'node-package-open-source-starter',
+    library: 'angularjs-jwt',
     libraryTarget: 'umd',
+    libraryExport: 'default',
   }
 };
