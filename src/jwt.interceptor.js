@@ -30,11 +30,8 @@ export default function jwtInterceptor($q, $injector, $location, jwtOptions) {
       }
 
       function replayRequests(auth) {
-        replays.forEach((replay) => {
-          replay.success();
-        });
-
-        replays.length = 0;
+        const replay = replays.shift();
+        replay.success();
 
         return auth;
       }
@@ -65,7 +62,7 @@ export default function jwtInterceptor($q, $injector, $location, jwtOptions) {
 
           replays.push(replay);
 
-          if (!refreshTokenPromise && !$injector.get('jwtAuthentication').pendingRefreshToken()) {
+          if (!refreshTokenPromise) {
             refreshTokenPromise = $injector.get('jwtAuthentication') // REFRESH TOKEN HERE
               .refreshToken()
               .then(replayRequests)
