@@ -1,3 +1,7 @@
-const defaultModule = angular.module('angularjs-jwt', []);
+import jwtInterceptor from './jwt.interceptor';
 
-export default defaultModule;
+const angularjsJwtModule = angular
+  .module('angularjs-jwt', [])
+  .factory('jwtInterceptor', jwtInterceptor);
+
+export default angularjsJwtModule;

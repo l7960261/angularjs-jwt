@@ -1,9 +1,8 @@
 import { assert } from 'chai';
-import defaultModule from '../src/index';
+import angularjsJwtModule from '../src/index';
 
-describe('Awesome test.', () => {
+describe('Main Module', () => {
   it('should test default angular module', () => {
-    const expectedVal = null;
-    assert(defaultModule !== expectedVal, 'Default is not null :(');
+    assert(angularjsJwtModule.name === 'angularjs-jwt', 'Default module name must be "angularjs-jwt" :(');
   });
 });
