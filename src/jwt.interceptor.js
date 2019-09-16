@@ -6,7 +6,7 @@ export default function jwtInterceptor($q, $injector) {
     request: (config) => {
       const reassignConfig = config;
       reassignConfig.headers = reassignConfig.headers || {};
-      const accessToken = $injector.get('auth').getAccessToken();
+      const accessToken = $injector.get('authService').getAccessToken();
       if (accessToken) {
         reassignConfig.headers.Authorization = `Bearer ${accessToken}`;
       }
@@ -64,8 +64,8 @@ export default function jwtInterceptor($q, $injector) {
 
           replays.push(replay);
 
-          if (!refreshTokenPromise && !$injector.get('auth').pendingRefreshToken()) {
-            refreshTokenPromise = $injector.get('auth') // REFRESH TOKEN HERE
+          if (!refreshTokenPromise && !$injector.get('authService').pendingRefreshToken()) {
+            refreshTokenPromise = $injector.get('authService') // REFRESH TOKEN HERE
               .refreshToken()
               .then(replayRequests)
               .catch(cancelRequestsAndRedirect)
