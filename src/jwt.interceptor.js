@@ -1,4 +1,4 @@
-export default function jwtInterceptor($q, $injector) {
+export default function jwtInterceptor($q, $injector, $location, jwtOptions) {
   const replays = [];
   let refreshTokenPromise;
 
@@ -11,7 +11,7 @@ export default function jwtInterceptor($q, $injector) {
         reassignConfig.headers.Authorization = `Bearer ${accessToken}`;
       }
 
-      if (reassignConfig.url === 'http://localhost:8080/api/authRefresh') {
+      if (reassignConfig.url === jwtOptions.refreshTokenAPI) {
         return reassignConfig;
       }
 
@@ -21,10 +21,10 @@ export default function jwtInterceptor($q, $injector) {
     response: response => response,
     responseError: (response) => {
       function clearRefreshTokenPromise(auth) {
-        // if (replays.length == 0) {
-        //   refreshTokenPromise = null;
-        // }
-        console.log('FINALLY');
+        if (replays.length === 0) {
+          refreshTokenPromise = null;
+          console.log('FINALLY');
+        }
 
         return auth;
       }
@@ -48,6 +48,7 @@ export default function jwtInterceptor($q, $injector) {
         replays.length = 0;
 
         // SET YOUR LOGIN PAGE
+        $location.url(jwtOptions.loginPage);
       }
 
       if (response.status === 401) {
@@ -81,4 +82,4 @@ export default function jwtInterceptor($q, $injector) {
   };
 }
 
-jwtInterceptor.$inject = ['$q', '$injector'];
+jwtInterceptor.$inject = ['$q', '$injector', '$location', 'jwtOptions'];
