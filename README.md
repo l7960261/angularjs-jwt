@@ -12,6 +12,40 @@ npm install
 npm test
 ```
 
+# Use in HTML
+
+```
+  <script src="../dist/angularjs-jwt.js"></script>
+  <script>
+    angular.module('example-app', ['angularjs-jwt'])
+      .config(['$httpProvider', 'jwtAuthenticationProvider', function (httpProvider, jwtAuthenticationProvider) {
+        jwtAuthenticationProvider.changeOptions({
+          accessTokenURI: 'yourAccessTokenURI',
+          refreshTokenURI: 'yourRefreshTokenURI',
+          redirect: 'yourRedirectPage'
+        });
+        $httpProvider.interceptors.push('jwtInterceptor');
+      }])
+  </script>
+```
+
+# Use in es6
+```
+import angular from 'angular';
+import jwtModule from '../lib';
+
+angular
+  .module('example-es6', [jwtModule.name])
+  .config(['$httpProvider', 'jwtAuthenticationProvider', function ($httpProvider, jwtAuthenticationProvider) {
+    jwtAuthenticationProvider.changeOptions({
+      accessTokenURI: 'yourAccessTokenURI',
+      refreshTokenURI: 'yourRefreshTokenURI',
+      redirect: 'yourRedirectPage'
+    });
+
+    $httpProvider.interceptors.push('jwtInterceptor');
+  }]);
+```
 
 # License
 
