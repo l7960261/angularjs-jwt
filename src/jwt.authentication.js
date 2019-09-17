@@ -6,8 +6,8 @@ export default function jwtAuthenticationProvider() {
     accessTokenURI: '/api/accessToken',
     refreshTokenURI: '/api/refreshToken',
     redirect: '/auth/login',
-    accessTokenKey: '_jwt_accessToken',
-    refreshTokenKey: '_jwt_refreshToken'
+    storeKeyAccessToken: '_jwt_access_token',
+    storeKeyRefreshToken: '_jwt_refresh_token'
   };
 
   this.changeOptions = (options) => {
@@ -15,17 +15,17 @@ export default function jwtAuthenticationProvider() {
   };
 
   this.$get = ['$http', function ($http) {
-    let accessToken = getToken(jwtOptions.accessTokenKey);
-    let refreshToken = getToken(jwtOptions.refreshTokenKey);
+    let accessToken = getToken(jwtOptions.storeKeyAccessToken);
+    let refreshToken = getToken(jwtOptions.storeKeyRefreshToken);
 
     function saveAccessToken(value) {
       accessToken = value;
-      saveToken(jwtOptions.accessTokenKey, value);
+      saveToken(jwtOptions.storeKeyAccessToken, value);
     }
 
     function saveRefreshToken(value) {
       refreshToken = value;
-      saveToken(jwtOptions.refreshTokenKey, value);
+      saveToken(jwtOptions.storeKeyRefreshToken, value);
     }
 
     return {
@@ -51,11 +51,12 @@ export default function jwtAuthenticationProvider() {
         return $http
           .post(jwtOptions.refreshTokenURI)
           .then((arg) => {
-            console.log('交換 Token 完畢');
             const { data } = arg;
             ({ accessToken, refreshToken } = data);
+
             saveAccessToken(accessToken);
             saveRefreshToken(refreshToken);
+            console.log('交換 Token 完畢');
             return data;
           });
       },
