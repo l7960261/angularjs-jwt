@@ -14,7 +14,7 @@ npm i angularjs-jwt
 # Use in HTML
 
 ```
-  <script src="../dist/angularjs-jwt.js"></script>
+  <script src="node_modules/angularjs-jwt/dist/angularjs-jwt.js"></script>
   <script>
     angular.module('example-app', ['angularjs-jwt'])
       .config(['$httpProvider', 'jwtAuthenticationProvider', function (httpProvider, jwtAuthenticationProvider) {
@@ -31,7 +31,7 @@ npm i angularjs-jwt
 # Use in es6
 ```
 import angular from 'angular';
-import jwtModule from '../lib';
+import jwtModule from 'angularjs-jwt';
 
 angular
   .module('example-es6', [jwtModule.name])
