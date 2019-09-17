@@ -6,10 +6,9 @@
 
 AngularJS for jwt support accessToken & refreshToken
 
-# Development
+# Install
 ```
-npm install
-npm test
+npm i angularjs-jwt
 ```
 
 # Use in HTML
