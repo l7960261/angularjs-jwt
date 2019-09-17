@@ -4,7 +4,7 @@
   "description": "Library to help you work with JWT accessToken/refreshToken on AngularJS",
   "main": "./lib/index.js",
   "scripts": {
-    "clean": "rimraf lib",
+    "clean": "rimraf lib && rimraf dist",
     "test": "npm run build:dist && karma start karma-src.conf.js --single-run",
     "lint": "eslint src test",
     "build": "npm run build:dist && npm run build:lib",
