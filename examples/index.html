@@ -9,5 +9,16 @@
 <body>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
   <script src="../dist/angularjs-jwt.js"></script>
+  <script>
+    angular.module('example-app', ['angularjs-jwt'])
+      .config(['$httpProvider', 'jwtAuthenticationProvider', function (httpProvider, jwtAuthenticationProvider) {
+        jwtAuthenticationProvider.changeOptions({
+          accessTokenURI: 'yourAccessTokenURI',
+          refreshTokenURI: 'yourRefreshTokenURI',
+          redirect: 'yourRedirectPage'
+        });
+        $httpProvider.interceptors.push('jwtInterceptor');
+      }])
+  </script>
 </body>
 </html>
