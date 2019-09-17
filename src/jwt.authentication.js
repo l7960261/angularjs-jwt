@@ -35,7 +35,7 @@ export default function jwtAuthenticationProvider() {
     }
 
     function fetchRefreshToken() {
-      console.log('發起交換 Token');
+      // console.log('Fetch refresh token start.');
       const token = jwtParceler.getRefreshToken();
       return $http
         .post(jwtOptions.refreshTokenURI, { token })
@@ -44,7 +44,7 @@ export default function jwtAuthenticationProvider() {
 
           setAccessToken(data.accessToken);
           setRefreshToken(data.refreshToken);
-          console.log('交換 Token 完畢');
+          // console.log('Fetch refresh token complete.');
           return data;
         });
     }

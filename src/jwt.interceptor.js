@@ -26,7 +26,7 @@ export default function jwtInterceptorProvider() {
         function clearRefreshTokenPromise(auth) {
           if (replays.length === 0) {
             refreshTokenPromise = null;
-            console.log('FINALLY');
+            // console.log('Clean refresh token promise.');
           }
 
           return auth;

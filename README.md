@@ -46,6 +46,15 @@ angular
   }]);
 ```
 
+## Usage jwtAuthentication manually
+```
+angular.controller(['jwtAuthentication', function(jwtAuthentication) {
+  // Get token...
+  jwtAuthentication.setAccessToken(yourAccessToken);
+  jwtAuthentication.setRefreshToken(yourAccessToken);
+}]);
+```
+
 # License
 
 MIT © Wilson Weng
