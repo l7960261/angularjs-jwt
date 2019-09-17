@@ -58,6 +58,7 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15"
   }
 }

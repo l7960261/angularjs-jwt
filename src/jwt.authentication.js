@@ -1,5 +1,4 @@
 import { assign } from 'lodash';
-import { saveToken, getToken } from './jwt.utils';
 
 export default function jwtAuthenticationProvider() {
   let jwtOptions = {
@@ -14,51 +13,53 @@ export default function jwtAuthenticationProvider() {
     jwtOptions = assign(jwtOptions, options);
   };
 
-  this.$get = ['$http', function ($http) {
-    let accessToken = getToken(jwtOptions.storeKeyAccessToken);
-    let refreshToken = getToken(jwtOptions.storeKeyRefreshToken);
-
-    function saveAccessToken(value) {
-      accessToken = value;
-      saveToken(jwtOptions.storeKeyAccessToken, value);
+  this.$get = ['$http', 'jwtParceler', function ($http, jwtParceler) {
+    function setAccessToken(value) {
+      jwtParceler.setToken(jwtOptions.storeKeyAccessToken, value);
     }
 
-    function saveRefreshToken(value) {
-      refreshToken = value;
-      saveToken(jwtOptions.storeKeyRefreshToken, value);
+    function setRefreshToken(value) {
+      jwtParceler.setToken(jwtOptions.storeKeyRefreshToken, value);
+    }
+
+    function login(username, password) {
+      return $http
+        .post(jwtOptions.accessTokenURI, { username, password })
+        .then((arg) => {
+          const { data } = arg;
+
+          setAccessToken(data.accessToken);
+          setRefreshToken(data.refreshToken);
+          return data;
+        });
+    }
+
+    function fetchRefreshToken() {
+      console.log('發起交換 Token');
+      const token = jwtParceler.getRefreshToken();
+      return $http
+        .post(jwtOptions.refreshTokenURI, { token })
+        .then((arg) => {
+          const { data } = arg;
+
+          setAccessToken(data.accessToken);
+          setRefreshToken(data.refreshToken);
+          console.log('交換 Token 完畢');
+          return data;
+        });
     }
 
     return {
       get config() {
         return jwtOptions;
       },
-      login: (username, password) => $http
-        .post(jwtOptions.accessTokenURI, { username, password })
-        .then((arg) => {
-          const { data } = arg;
-
-          saveAccessToken(data.accessToken);
-          saveRefreshToken(data.refreshToken);
-          return data;
-        }),
       get accessToken() {
-        return accessToken;
+        return jwtParceler.getAccessToken(jwtOptions.storeKeyAccessToken);
       },
-      saveAccessToken,
-      saveRefreshToken,
-      refreshToken: () => {
-        console.log('發起交換 Token');
-        return $http
-          .post(jwtOptions.refreshTokenURI)
-          .then((arg) => {
-            const { data } = arg;
-
-            saveAccessToken(data.accessToken);
-            saveRefreshToken(data.refreshToken);
-            console.log('交換 Token 完畢');
-            return data;
-          });
-      },
+      login,
+      setAccessToken,
+      setRefreshToken,
+      fetchRefreshToken,
     };
   }];
 }

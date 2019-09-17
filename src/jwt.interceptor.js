@@ -67,7 +67,7 @@ export default function jwtInterceptorProvider() {
 
             if (!refreshTokenPromise) {
               refreshTokenPromise = $injector.get('jwtAuthentication') // REFRESH TOKEN HERE
-                .refreshToken()
+                .fetchRefreshToken()
                 .then(replayRequests)
                 .catch(cancelRequestsAndRedirect)
                 .finally(clearRefreshTokenPromise);
