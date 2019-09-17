@@ -36,9 +36,9 @@ export default function jwtAuthenticationProvider() {
         .post(jwtOptions.accessTokenURI, { username, password })
         .then((arg) => {
           const { data } = arg;
-          ({ accessToken, refreshToken } = data);
-          saveAccessToken(accessToken);
-          saveRefreshToken(refreshToken);
+
+          saveAccessToken(data.accessToken);
+          saveRefreshToken(data.refreshToken);
           return data;
         }),
       get accessToken() {
@@ -52,10 +52,9 @@ export default function jwtAuthenticationProvider() {
           .post(jwtOptions.refreshTokenURI)
           .then((arg) => {
             const { data } = arg;
-            ({ accessToken, refreshToken } = data);
 
-            saveAccessToken(accessToken);
-            saveRefreshToken(refreshToken);
+            saveAccessToken(data.accessToken);
+            saveRefreshToken(data.refreshToken);
             console.log('交換 Token 完畢');
             return data;
           });
