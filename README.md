@@ -14,7 +14,7 @@ npm i angularjs-jwt
 # Use in HTML
 
 ```
-  <script src="node_modules/angularjs-jwt/dist/angularjs-jwt.js"></script>
+  <script src="https://unpkg.com/angularjs-jwt"></script>
   <script>
     angular.module('example-app', ['angularjs-jwt'])
       .config(['$httpProvider', 'jwtAuthenticationProvider', function (httpProvider, jwtAuthenticationProvider) {
