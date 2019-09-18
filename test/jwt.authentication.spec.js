@@ -1,7 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-describe('Main Module', () => {
+describe('jwt.authentication', () => {
   let jwtAuthentication;
   let $httpBackend;
   let jwtParceler;
@@ -31,7 +31,7 @@ describe('Main Module', () => {
     $httpBackend.verifyNoOutstandingRequest();
   });
 
-  it('jwtAuthentication.config should has default value', () => {
+  it('config should has default value', () => {
     chai.assert.equal(jwtAuthentication.config.accessTokenURI, '/api/accessToken');
     chai.assert.equal(jwtAuthentication.config.refreshTokenURI, '/api/refreshToken');
     chai.assert.equal(jwtAuthentication.config.redirect, '/auth/login');
@@ -39,31 +39,31 @@ describe('Main Module', () => {
     chai.assert.equal(jwtAuthentication.config.storeKeyRefreshToken, '_jwt_refresh_token');
   });
 
-  it('jwtAuthentication.accessToken', () => {
+  it('accessToken is undefined', () => {
     const expected = undefined;
     chai.assert.equal(jwtAuthentication.accessToken, expected);
   });
 
-  it('jwtAuthentication.login', () => {
+  it('login should call /api/accessToken', () => {
     $httpBackend.expectPOST('/api/accessToken');
     jwtAuthentication.login();
     $httpBackend.flush();
     chai.assert(jwtParceler.setToken.calledTwice);
   });
 
-  it('jwtAuthentication.setAccessToken', () => {
+  it('setAccessToken should call "setToken" method', () => {
     const token = 'ABCD';
     jwtAuthentication.setAccessToken(token);
     chai.assert(jwtParceler.setToken.calledOnce);
   });
 
-  it('jwtAuthentication.setRefreshToken', () => {
+  it('setRefreshToken should call "setToken" method', () => {
     const token = 'ABCD';
     jwtAuthentication.setRefreshToken(token);
     chai.assert(jwtParceler.setToken.calledOnce);
   });
 
-  it('jwtAuthentication.fetchRefreshToken', () => {
+  it('fetchRefreshToken should call /api/refreshToken', () => {
     $httpBackend.expectPOST('/api/refreshToken');
     jwtAuthentication.fetchRefreshToken();
     $httpBackend.flush();
