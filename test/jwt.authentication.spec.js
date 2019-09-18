@@ -11,7 +11,7 @@ describe('Main Module', () => {
   );
 
   beforeEach(
-    angular.mock.inject(($injector) => {
+    angular.mock.inject(['$injector', ($injector) => {
       // Set up variables
       jwtAuthentication = $injector.get('jwtAuthentication');
       jwtParceler = $injector.get('jwtParceler');
@@ -23,7 +23,7 @@ describe('Main Module', () => {
         .respond({ accessToken: '123', refreshToken: '321' });
       $httpBackend.when('POST', '/api/refreshToken')
         .respond({ accessToken: '123', refreshToken: '321' });
-    })
+    }])
   );
 
   afterEach(() => {
