@@ -1,5 +1,4 @@
 // Karma configuration
-// Generated on Sun Mar 13 2016 22:48:42 GMT+0800 (HKT)
 
 module.exports = function (config) {
   config.set({
@@ -17,8 +16,8 @@ module.exports = function (config) {
     files: [
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
-      'dist/angularjs-jwt.js',
-      'test/index.spec.js'
+      'src/index.js',
+      'test/**/*.js'
     ],
 
 
@@ -31,8 +30,17 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.js': ['babel'],
+      'src/index.js': ['webpack', 'sourcemap'],
       'test/**/*.spec.js': ['babel']
+    },
+
+
+    // Reference webpack config (single object)
+    // and configure some middleware settings
+    webpack: require("./webpack.config"),
+    webpackMiddleware: {
+      noInfo: true,
+      stats: "errors-only"
     },
 
 
