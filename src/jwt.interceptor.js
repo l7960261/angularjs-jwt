@@ -1,5 +1,5 @@
 export default function jwtInterceptorProvider() {
-  this.$get = ['$q', '$injector', '$location', function ($q, $injector, $location) {
+  this.$get = ['$q', '$injector', '$location', function jwtInterceptorFactory($q, $injector, $location) {
     const replays = [];
     let refreshTokenPromise;
 
@@ -72,7 +72,10 @@ export default function jwtInterceptorProvider() {
                 .catch(cancelRequestsAndRedirect)
                 .finally(clearRefreshTokenPromise);
             } else {
-              refreshTokenPromise = refreshTokenPromise.then(replayRequests);
+              refreshTokenPromise = refreshTokenPromise
+                .then(replayRequests)
+                .catch(cancelRequestsAndRedirect)
+                .finally(clearRefreshTokenPromise);
             }
           });
         }

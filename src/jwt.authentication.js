@@ -13,7 +13,7 @@ export default function jwtAuthenticationProvider() {
     jwtOptions = assign(jwtOptions, options);
   };
 
-  this.$get = ['$http', 'jwtParceler', function ($http, jwtParceler) {
+  this.$get = ['$http', 'jwtParceler', function jwtAuthenticationFactory($http, jwtParceler) {
     function setAccessToken(value) {
       jwtParceler.setToken(jwtOptions.storeKeyAccessToken, value);
     }

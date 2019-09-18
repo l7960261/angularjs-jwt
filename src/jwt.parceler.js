@@ -71,7 +71,7 @@ export default function jwtParcelerProvider() {
     return getToken(key);
   }
 
-  this.$get = [function () {
+  this.$get = [function jwtParcelerFactory() {
     return {
       setToken,
       getAccessToken,
