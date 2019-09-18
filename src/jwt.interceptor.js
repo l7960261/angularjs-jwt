@@ -20,8 +20,8 @@ export default function jwtInterceptorProvider() {
           ? refreshTokenPromise.then(() => reassignConfig)
           : reassignConfig;
       },
-      requestError: rejection => $q.reject(rejection),
-      response: response => response,
+      requestError: (rejection) => $q.reject(rejection),
+      response: (response) => response,
       responseError: (response) => {
         function clearRefreshTokenPromise(auth) {
           if (replays.length === 0) {

@@ -1,30 +1,5 @@
-const jwtDecode = require('jwt-decode');
-
-class IllegalJwtToken extends Error {
-  constructor(value) {
-    super();
-    this.message = value;
-  }
-}
-
-class JwtToken {
-  constructor(value) {
-    this.raw = value;
-    this.parsePayload();
-  }
-
-  parsePayload() {
-    try {
-      this.payload = jwtDecode(this.raw);
-    } catch (error) {
-      throw new IllegalJwtToken('The payload is not valid JWT payload and cannot be parsed.');
-    }
-  }
-
-  toString() {
-    return this.raw;
-  }
-}
+import IllegalJwtToken from './models/illegal-jwt-token';
+import JwtToken from './models/jwt-token';
 
 export default function jwtParcelerProvider() {
   function setToken(key, value) {
