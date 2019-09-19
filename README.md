@@ -6,6 +6,12 @@
 
 AngularJS for jwt support accessToken & refreshToken
 
+- HTTP request with Authorization header
+- If get 401 response
+  - Pending all requests
+  - Fetch refresh token API to get latest access/refresh token
+  - Fetch all 401 requests sequentially
+
 # Install
 ```
 npm i angularjs-jwt
@@ -19,9 +25,11 @@ npm i angularjs-jwt
     angular.module('example-app', ['angularjs-jwt'])
       .config(['$httpProvider', 'jwtAuthenticationProvider', function (httpProvider, jwtAuthenticationProvider) {
         jwtAuthenticationProvider.changeOptions({
-          accessTokenURI: 'yourAccessTokenURI',
-          refreshTokenURI: 'yourRefreshTokenURI',
-          redirect: 'yourRedirectPage'
+          accessTokenURI: 'yourAccessTokenURI', // Optional
+          refreshTokenURI: 'yourRefreshTokenURI', // Optional
+          redirect: 'yourRedirectPage', // Optional
+          storeKeyAccessToken: 'yourStoreKey', // Optional
+          storeKeyRefreshToken: 'yourStoreKey', // Optional
         });
         $httpProvider.interceptors.push('jwtInterceptor');
       }])
@@ -37,16 +45,27 @@ angular
   .module('example-es6', [jwtModule.name])
   .config(['$httpProvider', 'jwtAuthenticationProvider', function ($httpProvider, jwtAuthenticationProvider) {
     jwtAuthenticationProvider.changeOptions({
-      accessTokenURI: 'yourAccessTokenURI',
-      refreshTokenURI: 'yourRefreshTokenURI',
-      redirect: 'yourRedirectPage'
+      accessTokenURI: 'yourAccessTokenURI', // Optional
+      refreshTokenURI: 'yourRefreshTokenURI', // Optional
+      redirect: 'yourRedirectPage', // Optional
+      storeKeyAccessToken: 'yourStoreKey', // Optional
+      storeKeyRefreshToken: 'yourStoreKey', // Optional
     });
 
     $httpProvider.interceptors.push('jwtInterceptor');
   }]);
 ```
 
-## Usage jwtAuthentication manually
+## jwtAuthentication.login
+
+```
+angular.controller(['jwtAuthentication', function(jwtAuthentication) {
+  // will setAccessToken & setRefreshToken from data.accessToken/refreshToken
+  jwtAuthentication.login(username, password);
+}]);
+```
+
+## jwtAuthentication.setAccessToken/RefreshToken
 ```
 angular.controller(['jwtAuthentication', function(jwtAuthentication) {
   // Get token...
