@@ -5,8 +5,6 @@ export default function jwtAuthenticationProvider() {
     accessTokenURI: '/api/accessToken',
     refreshTokenURI: '/api/refreshToken',
     redirect: '/auth/login',
-    storeKeyAccessToken: '_jwt_access_token',
-    storeKeyRefreshToken: '_jwt_refresh_token'
   };
 
   this.changeOptions = (options) => {
@@ -14,22 +12,14 @@ export default function jwtAuthenticationProvider() {
   };
 
   this.$get = ['$http', 'jwtParceler', function jwtAuthenticationFactory($http, jwtParceler) {
-    function setAccessToken(value) {
-      jwtParceler.setToken(jwtOptions.storeKeyAccessToken, value);
-    }
-
-    function setRefreshToken(value) {
-      jwtParceler.setToken(jwtOptions.storeKeyRefreshToken, value);
-    }
-
     function login(username, password) {
       return $http
         .post(jwtOptions.accessTokenURI, { username, password })
         .then((arg) => {
           const { data } = arg;
 
-          setAccessToken(data.accessToken);
-          setRefreshToken(data.refreshToken);
+          jwtParceler.setAccessToken(data.accessToken);
+          jwtParceler.setRefreshToken(data.refreshToken);
           return data;
         });
     }
@@ -42,8 +32,8 @@ export default function jwtAuthenticationProvider() {
         .then((arg) => {
           const { data } = arg;
 
-          setAccessToken(data.accessToken);
-          setRefreshToken(data.refreshToken);
+          jwtParceler.setAccessToken(data.accessToken);
+          jwtParceler.setRefreshToken(data.refreshToken);
           // console.log('Fetch refresh token complete.');
           return data;
         });
@@ -54,11 +44,11 @@ export default function jwtAuthenticationProvider() {
         return jwtOptions;
       },
       get accessToken() {
-        return jwtParceler.getAccessToken(jwtOptions.storeKeyAccessToken);
+        return jwtParceler.getAccessToken();
       },
       login,
-      setAccessToken,
-      setRefreshToken,
+      setAccessToken: jwtParceler.setAccessToken,
+      setRefreshToken: jwtParceler.setRefreshToken,
       fetchRefreshToken,
     };
   }];

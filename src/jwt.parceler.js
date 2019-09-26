@@ -1,55 +1,78 @@
+import { assign } from 'lodash';
 import IllegalJwtToken from './models/illegal-jwt-token';
 import JwtToken from './models/jwt-token';
 
 export default function jwtParcelerProvider() {
-  function setToken(key, value) {
-    if (window.localStorage) {
-      localStorage.setItem(key, value);
-    } else {
-      const date = new Date();
-      date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000);
-      document.cookie = `${key}=${value}; expires=${date.toUTCString()}; path=/`;
-    }
-  }
+  let parcelerOptions = {
+    storeKeyAccessToken: '_jwt_access_token',
+    storeKeyRefreshToken: '_jwt_refresh_token'
+  };
 
-  function getToken(key) {
-    if (window.localStorage) {
-      return localStorage.getItem(key);
-    }
+  this.changeOptions = (options) => {
+    parcelerOptions = assign(parcelerOptions, options);
+  };
 
-    const name = `${key}=`;
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i += 1) {
-      let cookie = cookies[i];
-      while (cookie.charAt(0) === ' ') cookie = cookie.substring(1);
-      if (cookie.indexOf(name) === 0) return cookie.substring(name.length, cookie.length);
-    }
-
-    return '';
-  }
-
-  function getAccessToken(key) {
-    const raw = getToken(key);
-    let token;
-    try {
-      token = new JwtToken(raw);
-    } catch (error) {
-      if (!(error instanceof IllegalJwtToken)) {
-        throw error;
+  this.$get = [function jwtParcelerFactory() {
+    function setToken(key, value) {
+      if (window.localStorage) {
+        localStorage.setItem(key, value);
+      } else {
+        const date = new Date();
+        date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+        document.cookie = `${key}=${value}; expires=${date.toUTCString()}; path=/`;
       }
     }
 
-    return token;
-  }
+    function getToken(key) {
+      if (window.localStorage) {
+        return localStorage.getItem(key);
+      }
 
-  function getRefreshToken(key) {
-    return getToken(key);
-  }
+      const name = `${key}=`;
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i += 1) {
+        let cookie = cookies[i];
+        while (cookie.charAt(0) === ' ') cookie = cookie.substring(1);
+        if (cookie.indexOf(name) === 0) return cookie.substring(name.length, cookie.length);
+      }
 
-  this.$get = [function jwtParcelerFactory() {
+      return '';
+    }
+
+    function setAccessToken(value) {
+      setToken(parcelerOptions.storeKeyAccessToken, value);
+    }
+
+    function getAccessToken() {
+      const raw = getToken(parcelerOptions.storeKeyAccessToken);
+      let token;
+      try {
+        token = new JwtToken(raw);
+      } catch (error) {
+        if (!(error instanceof IllegalJwtToken)) {
+          throw error;
+        }
+      }
+
+      return token;
+    }
+
+    function setRefreshToken(value) {
+      setToken(parcelerOptions.storeKeyRefreshToken, value);
+    }
+
+    function getRefreshToken() {
+      return getToken(parcelerOptions.storeKeyRefreshToken);
+    }
+
     return {
+      get config() {
+        return parcelerOptions;
+      },
       setToken,
+      setAccessToken,
       getAccessToken,
+      setRefreshToken,
       getRefreshToken,
     };
   }];

@@ -15,7 +15,8 @@ describe('jwt.authentication', () => {
       // Set up variables
       jwtAuthentication = $injector.get('jwtAuthentication');
       jwtParceler = $injector.get('jwtParceler');
-      sinon.spy(jwtParceler, 'setToken');
+      sinon.spy(jwtParceler, 'setAccessToken');
+      sinon.spy(jwtParceler, 'setRefreshToken');
       // Set up the mock http service responses
       $httpBackend = $injector.get('$httpBackend');
       // backend definition
@@ -35,8 +36,6 @@ describe('jwt.authentication', () => {
     chai.assert.equal(jwtAuthentication.config.accessTokenURI, '/api/accessToken');
     chai.assert.equal(jwtAuthentication.config.refreshTokenURI, '/api/refreshToken');
     chai.assert.equal(jwtAuthentication.config.redirect, '/auth/login');
-    chai.assert.equal(jwtAuthentication.config.storeKeyAccessToken, '_jwt_access_token');
-    chai.assert.equal(jwtAuthentication.config.storeKeyRefreshToken, '_jwt_refresh_token');
   });
 
   it('accessToken is undefined', () => {
@@ -48,25 +47,15 @@ describe('jwt.authentication', () => {
     $httpBackend.expectPOST('/api/accessToken');
     jwtAuthentication.login();
     $httpBackend.flush();
-    chai.assert(jwtParceler.setToken.calledTwice);
-  });
-
-  it('setAccessToken should call "setToken" method', () => {
-    const token = 'ABCD';
-    jwtAuthentication.setAccessToken(token);
-    chai.assert(jwtParceler.setToken.calledOnce);
-  });
-
-  it('setRefreshToken should call "setToken" method', () => {
-    const token = 'ABCD';
-    jwtAuthentication.setRefreshToken(token);
-    chai.assert(jwtParceler.setToken.calledOnce);
+    chai.assert(jwtParceler.setAccessToken.calledOnce);
+    chai.assert(jwtParceler.setRefreshToken.calledOnce);
   });
 
   it('fetchRefreshToken should call /api/refreshToken', () => {
     $httpBackend.expectPOST('/api/refreshToken');
     jwtAuthentication.fetchRefreshToken();
     $httpBackend.flush();
-    chai.assert(jwtParceler.setToken.calledTwice);
+    chai.assert(jwtParceler.setAccessToken.calledOnce);
+    chai.assert(jwtParceler.setRefreshToken.calledOnce);
   });
 });

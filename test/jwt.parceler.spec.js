@@ -28,20 +28,20 @@ describe('jwt.parceler', () => {
 
   it('getAccessToken with payload name equal as "John Doe"', () => {
     localStorage.setItem(atKey, fakeJwtToken);
-    const actual = jwtParceler.getAccessToken(atKey);
+    const actual = jwtParceler.getAccessToken();
     chai.assert.equal(actual.payload.name, 'John Doe');
   });
 
   it('getAccessToken with invalid token', () => {
-    const actual = jwtParceler.getAccessToken(atKey);
+    const actual = jwtParceler.getAccessToken();
     chai.assert.isUndefined(actual);
   });
 
   it('getRefreshToken with value', () => {
-    const actual = jwtParceler.getRefreshToken(rtKey);
+    const actual = jwtParceler.getRefreshToken();
     chai.assert.isNull(actual);
     // Mock refresh_token
     localStorage.setItem(rtKey, 'REFRESH');
-    chai.assert.equal(jwtParceler.getRefreshToken(rtKey), 'REFRESH');
+    chai.assert.equal(jwtParceler.getRefreshToken(), 'REFRESH');
   });
 });

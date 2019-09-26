@@ -1,5 +1,11 @@
+import { random } from 'lodash';
+
 export default function jwtInterceptorProvider() {
   this.$get = ['$q', '$injector', '$location', function jwtInterceptorFactory($q, $injector, $location) {
+    const detectInterval = 1500;
+    const detectMaxTimes = 2;
+    const detectTimer = {};
+    let detectTimes = 0;
     const replays = [];
     let refreshTokenPromise;
 
@@ -23,20 +29,12 @@ export default function jwtInterceptorProvider() {
       requestError: (rejection) => $q.reject(rejection),
       response: (response) => response,
       responseError: (response) => {
-        function clearRefreshTokenPromise(auth) {
-          if (replays.length === 0) {
-            refreshTokenPromise = null;
-            // console.log('Clean refresh token promise.');
-          }
+        function replayRequests() {
+          replays.forEach((replay) => {
+            replay.success();
+          });
 
-          return auth;
-        }
-
-        function replayRequests(auth) {
-          const replay = replays.shift();
-          replay.success();
-
-          return auth;
+          replays.length = 0;
         }
 
         function cancelRequestsAndRedirect() {
@@ -47,8 +45,33 @@ export default function jwtInterceptorProvider() {
 
           replays.length = 0;
 
-          // SET YOUR LOGIN PAGE
+          // Set your login page
           $location.url($injector.get('jwtAuthentication').config.redirect);
+        }
+
+        function clearRefreshTokenPromise() {
+          detectTimer[random(0, 100000)] = setInterval(() => {
+            detectTimes += 1;
+
+            if (replays.length !== 0) {
+              // reset detectTimes
+              detectTimes = 0;
+              // reAssign
+              refreshTokenPromise = refreshTokenPromise
+                .then(replayRequests)
+                .catch(cancelRequestsAndRedirect)
+                .finally(clearRefreshTokenPromise);
+            } else if (replays.length === 0 && detectTimes > detectMaxTimes) {
+              // clear all intervalID
+              Object.keys(detectTimer)
+                .forEach((key) => {
+                  clearInterval(detectTimer[key]);
+                });
+              // clear promise
+              refreshTokenPromise = null;
+            }
+            // next detect
+          }, detectInterval);
         }
 
         if (response.status === 401) {
@@ -68,11 +91,6 @@ export default function jwtInterceptorProvider() {
             if (!refreshTokenPromise) {
               refreshTokenPromise = $injector.get('jwtAuthentication') // REFRESH TOKEN HERE
                 .fetchRefreshToken()
-                .then(replayRequests)
-                .catch(cancelRequestsAndRedirect)
-                .finally(clearRefreshTokenPromise);
-            } else {
-              refreshTokenPromise = refreshTokenPromise
                 .then(replayRequests)
                 .catch(cancelRequestsAndRedirect)
                 .finally(clearRefreshTokenPromise);
