@@ -20,20 +20,28 @@ npm i angularjs-jwt
 # Use in HTML
 
 ```
-  <script src="https://unpkg.com/angularjs-jwt"></script>
-  <script>
-    angular.module('example-app', ['angularjs-jwt'])
-      .config(['$httpProvider', 'jwtAuthenticationProvider', function (httpProvider, jwtAuthenticationProvider) {
+<script src="https://unpkg.com/angularjs-jwt"></script>
+<script>
+  angular.module('example-app', ['angularjs-jwt'])
+    .config([
+      '$httpProvider',
+      'jwtAuthenticationProvider',
+      'jwtParcelerProvider',
+      function (httpProvider, jwtAuthenticationProvider, jwtParcelerProvider) {
         jwtAuthenticationProvider.changeOptions({
           accessTokenURI: 'yourAccessTokenURI', // Optional
           refreshTokenURI: 'yourRefreshTokenURI', // Optional
           redirect: 'yourRedirectPage', // Optional
+        });
+        // If you want change storeKey, then use below.
+        jwtParcelerProvider.changeOptions({
           storeKeyAccessToken: 'yourStoreKey', // Optional
           storeKeyRefreshToken: 'yourStoreKey', // Optional
         });
+
         $httpProvider.interceptors.push('jwtInterceptor');
-      }])
-  </script>
+    }]);
+</script>
 ```
 
 # Use in es6
@@ -43,16 +51,23 @@ import jwtModule from 'angularjs-jwt';
 
 angular
   .module('example-es6', [jwtModule.name])
-  .config(['$httpProvider', 'jwtAuthenticationProvider', function ($httpProvider, jwtAuthenticationProvider) {
-    jwtAuthenticationProvider.changeOptions({
-      accessTokenURI: 'yourAccessTokenURI', // Optional
-      refreshTokenURI: 'yourRefreshTokenURI', // Optional
-      redirect: 'yourRedirectPage', // Optional
-      storeKeyAccessToken: 'yourStoreKey', // Optional
-      storeKeyRefreshToken: 'yourStoreKey', // Optional
-    });
+  .config([
+    '$httpProvider',
+    'jwtAuthenticationProvider',
+    'jwtParcelerProvider',
+    function ($httpProvider, jwtAuthenticationProvider, jwtParcelerProvider) {
+      jwtAuthenticationProvider.changeOptions({
+        accessTokenURI: 'yourAccessTokenURI', // Optional
+        refreshTokenURI: 'yourRefreshTokenURI', // Optional
+        redirect: 'yourRedirectPage', // Optional
+      });
+      // If you want change storeKey, then use below.
+      jwtParcelerProvider.changeOptions({
+        storeKeyAccessToken: 'yourStoreKey', // Optional
+        storeKeyRefreshToken: 'yourStoreKey', // Optional
+      });
 
-    $httpProvider.interceptors.push('jwtInterceptor');
+      $httpProvider.interceptors.push('jwtInterceptor');
   }]);
 ```
 
