@@ -1,6 +1,6 @@
 {
   "name": "angularjs-jwt",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Library to help you work with JWT accessToken/refreshToken on AngularJS",
   "main": "./lib/index.js",
   "scripts": {
